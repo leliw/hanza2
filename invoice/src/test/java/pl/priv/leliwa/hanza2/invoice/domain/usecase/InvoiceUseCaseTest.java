@@ -37,6 +37,7 @@ public class InvoiceUseCaseTest {
     void create() {
         LocalDate saleDate = LocalDate.of(2023, 4, 17);
         Invoice invoice = Invoice.builder()
+                .invoiceId(null)
                 .saleDate(saleDate)
                 .build();
         CreateInvoiceUseCase createInvoiceUseCase = new CreateInvoiceUseCase(invoiceRepository);
@@ -44,7 +45,7 @@ public class InvoiceUseCaseTest {
         createInvoiceUseCase.execute(invoice);
 
         verify(invoiceRepository).save(
-                argThat(i -> i.getSaleDate().equals(saleDate)));
+                argThat(i -> i.getSaleDate().equals(saleDate) && i.getInvoiceId() != null));
     }
 
     @Test

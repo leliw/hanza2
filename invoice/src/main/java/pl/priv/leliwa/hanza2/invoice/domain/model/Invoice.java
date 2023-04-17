@@ -13,7 +13,7 @@ import lombok.ToString;
 import pl.priv.leliwa.hanza2.invoice.domain.exception.InvoiceItemNotFoundException;
 
 
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @ToString
 public class Invoice {
