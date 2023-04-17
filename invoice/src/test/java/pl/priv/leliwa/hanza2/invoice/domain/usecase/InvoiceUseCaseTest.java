@@ -1,6 +1,7 @@
 package pl.priv.leliwa.hanza2.invoice.domain.usecase;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -35,12 +36,15 @@ public class InvoiceUseCaseTest {
     @Test
     void create() {
         LocalDate saleDate = LocalDate.of(2023, 4, 17);
+        Invoice invoice = Invoice.builder()
+                .saleDate(saleDate)
+                .build();
         CreateInvoiceUseCase createInvoiceUseCase = new CreateInvoiceUseCase(invoiceRepository);
 
-        createInvoiceUseCase.execute(saleDate);
+        createInvoiceUseCase.execute(invoice);
 
         verify(invoiceRepository).save(
-                argThat(invoice -> invoice.getSaleDate().equals(saleDate)));
+                argThat(i -> i.getSaleDate().equals(saleDate)));
     }
 
     @Test
@@ -148,9 +152,9 @@ public class InvoiceUseCaseTest {
         when(invoiceRepository.findById(invoiceId)).thenReturn(Optional.of(invoice));
         ShowInvoiceUseCase showInvoiceUseCase = new ShowInvoiceUseCase(invoiceRepository);
 
-        Invoice actual = showInvoiceUseCase.execute(invoiceId);
+        Optional<Invoice> actual = showInvoiceUseCase.execute(invoiceId);
 
-        assertEquals(invoice, actual);
+        assertEquals(invoice, actual.get());
     }
 
     @Test
@@ -159,8 +163,8 @@ public class InvoiceUseCaseTest {
         when(invoiceRepository.findById(any())).thenReturn(Optional.empty());
         ShowInvoiceUseCase showInvoiceUseCase = new ShowInvoiceUseCase(invoiceRepository);
 
-        assertThrows(InvoiceNotFoundException.class, () -> {
-            showInvoiceUseCase.execute(invoiceId);
-        });
+        Optional<Invoice> invoice =  showInvoiceUseCase.execute(invoiceId);
+        
+        assertFalse(invoice.isPresent());
     }
 }

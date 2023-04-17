@@ -1,5 +1,6 @@
 package pl.priv.leliwa.hanza2.invoice.domain.usecase;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -13,8 +14,8 @@ public class ShowInvoiceUseCase {
     
     private InvoiceRepository invoiceRepository;
 
-    public Invoice execute(UUID invoiceId) throws InvoiceNotFoundException {
-        return this.invoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException(invoiceId));
+    public Optional<Invoice> execute(UUID invoiceId) throws InvoiceNotFoundException {
+        return this.invoiceRepository.findById(invoiceId);
     }
     
 }

@@ -1,7 +1,5 @@
 package pl.priv.leliwa.hanza2.invoice.domain.usecase;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import pl.priv.leliwa.hanza2.invoice.domain.model.Invoice;
 import pl.priv.leliwa.hanza2.invoice.domain.port.InvoiceRepository;
@@ -12,9 +10,9 @@ public class CreateInvoiceUseCase {
     
     private InvoiceRepository invoiceRepository;
 
-    public void execute(LocalDate saleDate) {
-        Invoice invoice = Invoice.builder().saleDate(saleDate).build();
+    public Invoice execute(Invoice invoice) {
         this.invoiceRepository.save(invoice);
+        return invoice;
     }
     
 }

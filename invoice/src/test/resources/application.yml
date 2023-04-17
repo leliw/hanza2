@@ -1,0 +1,6 @@
+spring:
+    security:
+        user:
+            name: user
+            password: pass
+            role: user, admin # A comma separated list of roles
