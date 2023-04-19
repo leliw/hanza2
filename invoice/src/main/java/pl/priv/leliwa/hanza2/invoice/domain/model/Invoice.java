@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -16,15 +19,18 @@ import pl.priv.leliwa.hanza2.invoice.domain.exception.InvoiceItemNotFoundExcepti
 @Builder(toBuilder = true)
 @Getter
 @ToString
+
+@Entity
 public class Invoice {
 
+    @Id
     @Builder.Default
     private UUID invoiceId = UUID.randomUUID();
-    @Builder.Default
-    private Optional<String> number = Optional.empty();
+    private String number;
     @Builder.Default
     private LocalDate saleDate = LocalDate.now();
     @Builder.Default
+    @Transient
     private List<InvoiceItem> items = new ArrayList<>();
     @Builder.Default
     private BigDecimal netAmount = BigDecimal.ZERO;

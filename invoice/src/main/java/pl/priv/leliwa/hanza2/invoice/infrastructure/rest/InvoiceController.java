@@ -1,5 +1,6 @@
 package pl.priv.leliwa.hanza2.invoice.infrastructure.rest;
 
+import java.net.URI;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pl.priv.leliwa.hanza2.invoice.domain.exception.InvoiceNotFoundException;
 import pl.priv.leliwa.hanza2.invoice.domain.model.Invoice;
@@ -22,17 +23,24 @@ import pl.priv.leliwa.hanza2.invoice.domain.usecase.ShowInvoiceUseCase;
 @RestController
 @RequestMapping("/api/invoices")
 public class InvoiceController {
-    
+
     @Autowired
     private InvoiceRepository invoiceRepository;
-    
+
     @PostMapping
-    public @ResponseBody Invoice create(@RequestBody Invoice invoice) {
+    public ResponseEntity<Invoice> create(@RequestBody Invoice invoice) {
         CreateInvoiceUseCase useCase = new CreateInvoiceUseCase(invoiceRepository);
-        return useCase.execute(invoice);
+        Invoice savedInvoice = useCase.execute(invoice);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedInvoice.getInvoiceId())
+                .toUri();
+        return ResponseEntity
+                .created(location)
+                .body(savedInvoice);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Invoice> show(@PathVariable UUID id) throws InvoiceNotFoundException {
         ShowInvoiceUseCase useCase = new ShowInvoiceUseCase(invoiceRepository);
         Optional<Invoice> invoice = useCase.execute(id);

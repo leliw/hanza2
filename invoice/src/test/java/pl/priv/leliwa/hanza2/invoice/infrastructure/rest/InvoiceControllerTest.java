@@ -14,7 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import pl.priv.leliwa.hanza2.invoice.domain.model.Invoice;
 import pl.priv.leliwa.hanza2.invoice.domain.port.InvoiceRepository;
@@ -32,39 +36,43 @@ public class InvoiceControllerTest {
     private InvoiceRepository invoiceRepository;
 
     @Test
-    public void showNotExistingInvoice() throws Exception {
+    public void showExistingInvoice() throws Exception {
         Invoice invoice = Invoice.builder()
                 .build();
         when(invoiceRepository.findById(invoice.getInvoiceId())).thenReturn(Optional.of(invoice));
 
         assertThat(
                 this.restTemplate
-                        .withBasicAuth("user", "pass")
-                        .getForEntity("http://localhost:" + port + "/api/invoices/" + invoice.getInvoiceId(), Invoice.class)
+                        .getForEntity("http://localhost:" + port + "/api/invoices/"
+                                + invoice.getInvoiceId(), Invoice.class)
                         .getStatusCode())
                 .isEqualTo(HttpStatus.OK);
     }
 
     @Test
-	public void showExistingInvoice() throws Exception {
-        when(invoiceRepository.findById(any())).thenReturn(Optional.empty());
+        public void showNotExistingInvoice() throws Exception {
+                when(invoiceRepository.findById(any())).thenReturn(Optional.empty());
 
 		assertThat(
             this.restTemplate
-            .withBasicAuth("user", "pass")
-            .getForEntity("http://localhost:" + port + "/api/invoices/" + UUID.randomUUID(), Invoice.class)
-            .getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-	}
+                .getForEntity("/api/invoices/" + UUID.randomUUID(), Invoice.class)
+                .getStatusCode())
+                .isEqualTo(HttpStatus.NOT_FOUND);
+        }
 
     @Test
     public void createInvoice() throws Exception {
         Invoice invoice = Invoice.builder().build();
 
-        assertThat(
-                this.restTemplate
-                        .withBasicAuth("user", "pass")
-                        .postForLocation("http://localhost:" + port + "/api/invoices", invoice))
-                .hasFragment(null);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth("user", "pass");
+        HttpEntity<Invoice> request = new HttpEntity<>(invoice, headers);
+
+        ResponseEntity<Invoice> response = this.restTemplate
+                .exchange("/api/invoices", HttpMethod.POST, request, Invoice.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getHeaders().getLocation()).isNotNull();
     }
 
 }
