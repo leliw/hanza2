@@ -14,7 +14,7 @@ public class CreateInvoiceUseCase {
     public Invoice execute(Invoice src) {
         // Skopiowanie faktury i nadanie nowego Id
         Invoice invoice = src.toBuilder()
-                .invoiceId(UUID.randomUUID())
+                .id(UUID.randomUUID())
                 .build();
         this.invoiceRepository.save(invoice);
         return invoice;

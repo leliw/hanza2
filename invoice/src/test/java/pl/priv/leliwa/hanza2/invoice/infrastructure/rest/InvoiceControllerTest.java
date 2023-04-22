@@ -39,12 +39,12 @@ public class InvoiceControllerTest {
     public void showExistingInvoice() throws Exception {
         Invoice invoice = Invoice.builder()
                 .build();
-        when(invoiceRepository.findById(invoice.getInvoiceId())).thenReturn(Optional.of(invoice));
+        when(invoiceRepository.findById(invoice.getId())).thenReturn(Optional.of(invoice));
 
         assertThat(
                 this.restTemplate
                         .getForEntity("http://localhost:" + port + "/api/invoices/"
-                                + invoice.getInvoiceId(), Invoice.class)
+                                + invoice.getId(), Invoice.class)
                         .getStatusCode())
                 .isEqualTo(HttpStatus.OK);
     }

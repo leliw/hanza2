@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -25,12 +25,12 @@ public class Invoice {
 
     @Id
     @Builder.Default
-    private UUID invoiceId = UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
     private String number;
     @Builder.Default
     private LocalDate saleDate = LocalDate.now();
     @Builder.Default
-    @Transient
+    @OneToMany(mappedBy="invoice")
     private List<InvoiceItem> items = new ArrayList<>();
     @Builder.Default
     private BigDecimal netAmount = BigDecimal.ZERO;
@@ -44,7 +44,7 @@ public class Invoice {
     }
 
     public void remove(Integer no) throws InvoiceItemNotFoundException {
-        InvoiceItem invoiceItem = getItem(no).orElseThrow(() -> new InvoiceItemNotFoundException(this.invoiceId, no));
+        InvoiceItem invoiceItem = getItem(no).orElseThrow(() -> new InvoiceItemNotFoundException(this.id, no));
         this.items.remove(invoiceItem);
         this.netAmount = this.netAmount.subtract(invoiceItem.getNetAmount());
         this.grossAmount = this.grossAmount.subtract(invoiceItem.getGrossAmount());

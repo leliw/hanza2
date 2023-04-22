@@ -33,7 +33,7 @@ public class InvoiceController {
         Invoice savedInvoice = useCase.execute(invoice);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(savedInvoice.getInvoiceId())
+                .buildAndExpand(savedInvoice.getId())
                 .toUri();
         return ResponseEntity
                 .created(location)
