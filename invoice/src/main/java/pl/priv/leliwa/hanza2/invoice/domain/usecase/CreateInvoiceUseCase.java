@@ -11,7 +11,7 @@ public class CreateInvoiceUseCase {
 
     private InvoiceRepository invoiceRepository;
 
-    public Invoice execute(Invoice src) {
+    public Invoice execute(Invoice src) throws Exception {
         // Skopiowanie faktury i nadanie nowego Id
         Invoice invoice = src.toBuilder()
                 .id(UUID.randomUUID())

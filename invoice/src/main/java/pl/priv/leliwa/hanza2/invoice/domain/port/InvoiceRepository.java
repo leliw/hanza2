@@ -7,5 +7,5 @@ import pl.priv.leliwa.hanza2.invoice.domain.model.Invoice;
 
 public interface InvoiceRepository {
     Optional<Invoice> findById(UUID invoiceId);
-    Invoice save(Invoice invoice);
+    Invoice save(Invoice invoice) throws Exception;
 }

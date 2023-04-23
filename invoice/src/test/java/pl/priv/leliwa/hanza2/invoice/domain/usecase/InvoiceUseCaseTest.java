@@ -34,7 +34,7 @@ public class InvoiceUseCaseTest {
     }
 
     @Test
-    void create() {
+    void create() throws Exception {
         LocalDate saleDate = LocalDate.of(2023, 4, 17);
         Invoice invoice = Invoice.builder()
                 .id(null)
@@ -49,7 +49,7 @@ public class InvoiceUseCaseTest {
     }
 
     @Test
-    void addItemToExistingInvoice() throws InvoiceNotFoundException {
+    void addItemToExistingInvoice() throws Exception {
         UUID invoiceId = UUID.randomUUID();
         Invoice invoice = Invoice.builder().build();
         InvoiceItem invoiceItem = InvoiceItem.builder()
@@ -80,7 +80,7 @@ public class InvoiceUseCaseTest {
     }
 
     @Test
-    void removeItemFromExistingInvoice() throws InvoiceNotFoundException, InvoiceItemNotFoundException {
+    void removeItemFromExistingInvoice() throws Exception {
         UUID invoiceId = UUID.randomUUID();
         Invoice invoice = Invoice.builder().build();
         InvoiceItem invoiceItem = InvoiceItem.builder()

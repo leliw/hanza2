@@ -14,7 +14,7 @@ public class AddInvoiceItemUseCase {
 
     private InvoiceRepository invoiceRepository;
 
-    public void execute(UUID invoiceId, InvoiceItem invoiceItem) throws InvoiceNotFoundException {
+    public void execute(UUID invoiceId, InvoiceItem invoiceItem) throws Exception {
         Invoice invoice = this.invoiceRepository.findById(invoiceId).orElseThrow(() -> new InvoiceNotFoundException(invoiceId));
         invoice.add(invoiceItem);
         this.invoiceRepository.save(invoice);

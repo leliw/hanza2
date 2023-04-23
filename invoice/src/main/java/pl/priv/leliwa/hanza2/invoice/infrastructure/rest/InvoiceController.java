@@ -28,7 +28,7 @@ public class InvoiceController {
     private InvoiceRepository invoiceRepository;
 
     @PostMapping
-    public ResponseEntity<Invoice> create(@RequestBody Invoice invoice) {
+    public ResponseEntity<Invoice> create(@RequestBody Invoice invoice) throws Exception {
         CreateInvoiceUseCase useCase = new CreateInvoiceUseCase(invoiceRepository);
         Invoice savedInvoice = useCase.execute(invoice);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
