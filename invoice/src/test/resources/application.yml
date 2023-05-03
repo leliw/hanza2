@@ -1,4 +1,23 @@
 spring:
+    application:
+        name: Hanza2-invoice-test
+        repository: Kafka
+    kafka:
+        bootstrap-servers: localhost:9092
+        consumer:
+            auto-offset-reset: earliest
+        streams:
+            cleanup:
+                on-startup: true
+                on-shutdown: true
+            properties:
+                default:
+                    key:
+                        serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                    value:
+                        serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+
+
     security:
         user:
             name: user

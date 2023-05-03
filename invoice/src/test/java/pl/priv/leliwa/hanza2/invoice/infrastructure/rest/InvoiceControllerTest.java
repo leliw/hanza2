@@ -23,7 +23,7 @@ import org.springframework.http.ResponseEntity;
 import pl.priv.leliwa.hanza2.invoice.domain.model.Invoice;
 import pl.priv.leliwa.hanza2.invoice.domain.port.InvoiceRepository;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties="spring.application.repository=JPA", webEnvironment = WebEnvironment.RANDOM_PORT)
 public class InvoiceControllerTest {
 
     @Value(value = "${local.server.port}")

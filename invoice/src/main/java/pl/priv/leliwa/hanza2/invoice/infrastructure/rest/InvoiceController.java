@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import pl.priv.leliwa.hanza2.invoice.domain.exception.InvoiceNotFoundException;
 import pl.priv.leliwa.hanza2.invoice.domain.model.Invoice;
 import pl.priv.leliwa.hanza2.invoice.domain.port.InvoiceRepository;
 import pl.priv.leliwa.hanza2.invoice.domain.usecase.CreateInvoiceUseCase;
@@ -41,7 +40,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Invoice> show(@PathVariable UUID id) throws InvoiceNotFoundException {
+    public ResponseEntity<Invoice> show(@PathVariable UUID id) throws Exception {
         ShowInvoiceUseCase useCase = new ShowInvoiceUseCase(invoiceRepository);
         Optional<Invoice> invoice = useCase.execute(id);
         if (invoice.isPresent()) {

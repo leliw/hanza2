@@ -101,7 +101,7 @@ public class InvoiceUseCaseTest {
     }
 
     @Test
-    void removeNotExistingItemFromExistingInvoice() throws InvoiceNotFoundException {
+    void removeNotExistingItemFromExistingInvoice() throws Exception {
         UUID invoiceId = UUID.randomUUID();
         Invoice invoice = Invoice.builder().build();
         InvoiceItem invoiceItem = InvoiceItem.builder()
@@ -120,7 +120,7 @@ public class InvoiceUseCaseTest {
     }
 
     @Test
-    void removeItemFromNotExistingInvoice() {
+    void removeItemFromNotExistingInvoice() throws Exception {
         UUID invoiceId = UUID.randomUUID();
         Invoice invoice = Invoice.builder().build();
         InvoiceItem invoiceItem = InvoiceItem.builder()
@@ -139,7 +139,7 @@ public class InvoiceUseCaseTest {
     }
 
     @Test
-    void showExistingInvoice() throws InvoiceNotFoundException {
+    void showExistingInvoice() throws Exception {
         InvoiceItem invoiceItem = InvoiceItem.builder()
                 .no(1)
                 .productId(UUID.randomUUID())
@@ -159,7 +159,7 @@ public class InvoiceUseCaseTest {
     }
 
     @Test
-    void showNotExistingInvoice() throws InvoiceNotFoundException {
+    void showNotExistingInvoice() throws Exception {
         UUID invoiceId = UUID.randomUUID();
         when(invoiceRepository.findById(any())).thenReturn(Optional.empty());
         ShowInvoiceUseCase showInvoiceUseCase = new ShowInvoiceUseCase(invoiceRepository);

@@ -6,6 +6,6 @@ import java.util.UUID;
 import pl.priv.leliwa.hanza2.invoice.domain.model.Invoice;
 
 public interface InvoiceRepository {
-    Optional<Invoice> findById(UUID invoiceId);
+    Optional<Invoice> findById(UUID invoiceId) throws Exception;
     Invoice save(Invoice invoice) throws Exception;
 }

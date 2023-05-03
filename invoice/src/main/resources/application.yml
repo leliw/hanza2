@@ -1,4 +1,7 @@
 spring:
+    application:
+        name: Hanza2-invoice
+        repository: Kafka
     security:
         user:
             name: user
@@ -6,10 +9,16 @@ spring:
             roles: user, admin # A comma separated list of roles
     mvc:
         log-request-details: false
+    kafka:
+        bootstrap-servers: localhost:9092
+        consumer:
+            auto-offset-reset: earliest
 
 logging:
     level:
         org:
+            apache:
+                kafka: WARN
             springframework:
                 security: INFO
         web: INFO

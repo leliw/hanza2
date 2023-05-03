@@ -10,13 +10,17 @@ import java.util.UUID;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import pl.priv.leliwa.hanza2.invoice.domain.exception.InvoiceItemNotFoundException;
 
 
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @ToString
 
