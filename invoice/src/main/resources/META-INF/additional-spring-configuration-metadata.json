@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "spring.application.repository",
+  "type": "java.lang.String",
+  "description": "Which repository is used [Kafka, JPA]"
+}]}
